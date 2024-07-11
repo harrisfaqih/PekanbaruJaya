@@ -15,11 +15,38 @@ export const categoryAdd = createAsyncThunk(
       console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
-      // console.log(error.response.data);
+      //console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
 );
+
+// end methode
+
+export const get_category = createAsyncThunk(
+  "category/get_category",
+  async (
+    { parPage, page, searchValue },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const { data } = await api.get(
+        `/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      //console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// end methode
 
 export const categoryReducer = createSlice({
   name: "category",
@@ -28,6 +55,7 @@ export const categoryReducer = createSlice({
     errorMessage: "",
     loader: false,
     categorys: [],
+    totalCategory: 0,
   },
   reducers: {
     messageClear: (state, _) => {
@@ -42,12 +70,15 @@ export const categoryReducer = createSlice({
       state.loader = false;
       state.errorMessage = payload.error;
     });
-    // builder.addCase(admin_login.fulfilled, (state, { payload }) => {
-    //   state.loader = false;
-    //   state.successMessage = payload.message;
-    //   state.token = payload.token;
-    //   state.role = returnRole(payload.token);
-    // });
+    builder.addCase(categoryAdd.fulfilled, (state, { payload }) => {
+      state.loader = false;
+      state.successMessage = payload.message;
+      state.categorys = [...state.categorys, payload.categorys];
+    });
+    builder.addCase(get_category.fulfilled, (state, { payload }) => {
+      state.totalCategory = payload.totalCategory;
+      state.categorys = payload.categorys;
+    });
   },
 });
 

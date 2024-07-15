@@ -107,6 +107,8 @@ logs
 
 node_modules
 bower_components
+dashboard/build/
+dashboard/build/images/
 
 *.sublime*
 

@@ -8,6 +8,31 @@ export const add_product = createAsyncThunk(
       const { data } = await api.post("/product-add", product, {
         withCredentials: true,
       });
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      //console.log(error.response.data);
+
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// end methode
+
+export const get_products = createAsyncThunk(
+  "product/get_products",
+  async (
+    { parPage, page, searchValue },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const { data } = await api.get(
+        `/products-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       console.log(data);
       return fulfillWithValue(data);
@@ -21,20 +46,14 @@ export const add_product = createAsyncThunk(
 // end methode
 
 export const get_product = createAsyncThunk(
-  "category/get_product",
-  async (
-    { parPage, page, searchValue },
-    { rejectWithValue, fulfillWithValue }
-  ) => {
+  "product/get_product",
+  async (productId, { rejectWithValue, fulfillWithValue }) => {
     try {
-      const { data } = await api.get(
-        `/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await api.get(`/product-get/${productId}`, {
+        withCredentials: true,
+      });
 
-      // console.log(data);
+      console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
       //console.log(error.response.data);
@@ -43,7 +62,53 @@ export const get_product = createAsyncThunk(
   }
 );
 
-// end methode
+//end methode
+
+export const update_product = createAsyncThunk(
+  "product/update_product",
+  async (product, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/product-update", product, {
+        withCredentials: true,
+      });
+
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      //console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//end methode
+
+export const product_image_update = createAsyncThunk(
+  "product/product_image_update",
+  async (
+    { oldImage, newImage, productId },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const formData = new FormData();
+      formData.append("oldImage", oldImage);
+      formData.append("newImage", newImage);
+      formData.append("productId", productId);
+
+      const { data } = await api.post("/product-image-update", formData, {
+        withCredentials: true,
+      });
+
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      //console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//end methode
 
 export const productReducer = createSlice({
   name: "product",
@@ -52,6 +117,7 @@ export const productReducer = createSlice({
     errorMessage: "",
     loader: false,
     products: [],
+    product: "",
     totalProduct: 0,
   },
   reducers: {
@@ -70,11 +136,29 @@ export const productReducer = createSlice({
     builder.addCase(add_product.fulfilled, (state, { payload }) => {
       state.loader = false;
       state.successMessage = payload.message;
-      state.products = [...state.products, payload.category];
     });
-    builder.addCase(get_product.fulfilled, (state, { payload }) => {
+    builder.addCase(get_products.fulfilled, (state, { payload }) => {
       state.totalProduct = payload.totalProduct;
       state.products = payload.products;
+    });
+    builder.addCase(get_product.fulfilled, (state, { payload }) => {
+      state.product = payload.product;
+    });
+    builder.addCase(update_product.pending, (state, { payload }) => {
+      state.loader = true;
+    });
+    builder.addCase(update_product.rejected, (state, { payload }) => {
+      state.loader = false;
+      state.errorMessage = payload.error;
+    });
+    builder.addCase(update_product.fulfilled, (state, { payload }) => {
+      state.loader = false;
+      state.product = payload.product;
+      state.successMessage = payload.message;
+    });
+    builder.addCase(product_image_update.fulfilled, (state, { payload }) => {
+      state.product = payload.product;
+      state.successMessage = payload.message;
     });
   },
 });

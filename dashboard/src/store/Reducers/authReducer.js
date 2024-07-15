@@ -43,6 +43,7 @@ export const get_user_info = createAsyncThunk(
   async (_, { rejectWithValue, fulfillWithValue }) => {
     try {
       const { data } = await api.get("/get-user", {
+        // Updated endpoint to /user
         withCredentials: true,
       });
       // console.log(data);

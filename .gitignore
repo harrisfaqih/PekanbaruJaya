@@ -109,6 +109,7 @@ node_modules
 bower_components
 dashboard/build/
 dashboard/build/images/
+frontend/public/images/
 
 *.sublime*
 

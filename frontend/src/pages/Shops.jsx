@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
@@ -11,17 +11,28 @@ import { BsFillGridFill } from "react-icons/bs";
 import { FaThList } from "react-icons/fa";
 import ShopProducts from "../components/products/ShopProducts";
 import Pagination from "../components/Pagination";
+import { useDispatch, useSelector } from "react-redux";
+import { price_range_product } from "../store/reducers/homeReducer";
 
 const Shops = () => {
+  const dispatch = useDispatch(); // Tambahkan tanda kurung untuk memanggil fungsi
+  const { products, categorys, priceRange, latest_product } = useSelector(
+    (state) => state.home
+  );
+
+  useEffect(() => {
+    dispatch(price_range_product());
+  }, []);
+  // Tambahkan 'dispatch' ke dalam array dependensi
+
+  useEffect(() => {
+    setState({
+      values: [priceRange.low, priceRange.high],
+    });
+  }, [priceRange]);
+
   const [filter, setFilter] = useState(true);
-  const categorys = [
-    "Alat tukang",
-    "Printilan",
-    "Bahan Bangunan",
-    "Kunci dan Gembok",
-    "alat pendukung",
-    "Peralatan Interior dll",
-  ];
+
   const [state, setState] = useState({ values: [20000, 1500000] });
   const [rating, setRating] = useState("");
   const [styles, setStyles] = useState("grid");
@@ -71,13 +82,16 @@ const Shops = () => {
               </h2>
               <div className="py-2">
                 {categorys.map((c, i) => (
-                  <div className="flex justify-start items-center gap-2 py-1">
-                    <input type="checkbox" id={c} />
+                  <div
+                    key={i}
+                    className="flex justify-start items-center gap-2 py-1"
+                  >
+                    <input type="checkbox" id={c.name} />
                     <label
                       className="text-slate-600 block cursor-pointer"
-                      htmlFor={c}
+                      htmlFor={c.name}
                     >
-                      {c}
+                      {c.name}
                     </label>
                   </div>
                 ))}
@@ -247,7 +261,7 @@ const Shops = () => {
                 </div>
               </div>
               <div className="py-5 flex flex-col gap-4 md:hidden">
-                <Products title="Latest Product" />
+                {/* <Products title='Latest Product' /> */}
               </div>
             </div>
 

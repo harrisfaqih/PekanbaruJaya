@@ -15,8 +15,10 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = ({ categorys }) => {
+const Header = () => {
+  const { categorys } = useSelector((state) => state.home);
   const { pathname } = useLocation;
   const [showShidebar, setShowShidebar] = useState(true);
   const user = true;

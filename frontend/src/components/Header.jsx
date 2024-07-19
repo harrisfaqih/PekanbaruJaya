@@ -16,19 +16,12 @@ import { FaGithub } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ categorys }) => {
   const { pathname } = useLocation;
   const [showShidebar, setShowShidebar] = useState(true);
   const user = true;
   const wishlist_count = 3;
-  const categorys = [
-    "Alat tukang",
-    "Printilan",
-    "Bahan Bangunan",
-    "Kunci dan Gembok",
-    "alat pendukung",
-    "Peralatan Interior dll",
-  ];
+
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
   const [categoryShow, setCategoryShow] = useState(true);
@@ -406,7 +399,12 @@ const Header = () => {
                         key={i}
                         className="flex justify-start items-center gap-2 px-[24px] py-[6px]"
                       >
-                        <Link className="text-sm block">{c}</Link>
+                        <img
+                          src={c.image}
+                          className="w-[30px] h-[30px] rounded-full overflow-hidden"
+                          alt=""
+                        />
+                        <Link className="text-sm block">{c.name}</Link>
                       </li>
                     );
                   })}
@@ -428,7 +426,9 @@ const Header = () => {
                     >
                       <option value="">Select Category</option>
                       {categorys.map((c, i) => (
-                        <option value={c}>{c}</option>
+                        <option key={i} value={c}>
+                          {c.name}
+                        </option>
                       ))}
                     </select>
                   </div>

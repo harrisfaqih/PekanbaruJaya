@@ -4,7 +4,7 @@ import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
 import { Link } from "react-router-dom";
 
-const FeatureProducts = () => {
+const FeatureProducts = ({ products }) => {
   return (
     <div className="w-[85%] flex flex-wrap mx-auto">
       <div className="w-full">
@@ -15,7 +15,7 @@ const FeatureProducts = () => {
       </div>
 
       <div className="w-full grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((p, i) => (
+        {products.map((p, i) => (
           <div
             key={i}
             className="border group transition-all duration-500 hover:shadow-md hover:-mt-3"
@@ -27,7 +27,7 @@ const FeatureProducts = () => {
 
               <img
                 className="sm:w-full  w-full h-[240px]"
-                src={`http://localhost:3000/images/products/${i + 1}.jpeg`}
+                src={p.images[0]}
                 alt=""
               />
 
@@ -48,11 +48,11 @@ const FeatureProducts = () => {
             </div>
 
             <div className="py-3 text-slate-600 px-2">
-              <h2 className="font-bold">Product Name </h2>
+              <h2 className="font-bold">{p.name}</h2>
               <div className="flex justify-start items-center gap-3">
-                <span className="text-md font-semibold">Rp656</span>
+                <span className="text-md font-semibold">Rp{p.price}</span>
                 <div className="flex">
-                  <Rating ratings={4.5} />
+                  <Rating ratings={p.rating} />
                 </div>
               </div>
             </div>

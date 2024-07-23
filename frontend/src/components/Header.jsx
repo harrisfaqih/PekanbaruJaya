@@ -14,19 +14,23 @@ import { IoIosArrowDown } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { categorys } = useSelector((state) => state.home);
   const { pathname } = useLocation;
   const [showShidebar, setShowShidebar] = useState(true);
-  const user = true;
+  const user = false;
   const wishlist_count = 3;
 
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
   const [categoryShow, setCategoryShow] = useState(true);
+  const search = () => {
+    navigate(`/products/search?category=${category}&&value=${searchValue}`);
+  };
   return (
     <div className="w-full bg-white">
       <div className="header-top bg-[#caddff] md-lg:hidden">
@@ -86,8 +90,8 @@ const Header = () => {
                   </Link>
                 ) : (
                   <Link
-                    className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
                     to="/login"
+                    className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
                   >
                     <span>
                       {" "}
@@ -406,7 +410,12 @@ const Header = () => {
                           className="w-[30px] h-[30px] rounded-full overflow-hidden"
                           alt=""
                         />
-                        <Link className="text-sm block">{c.name}</Link>
+                        <Link
+                          to={`/products?category=${c.name}`}
+                          className="text-sm block"
+                        >
+                          {c.name}
+                        </Link>
                       </li>
                     );
                   })}
@@ -428,7 +437,7 @@ const Header = () => {
                     >
                       <option value="">Select Category</option>
                       {categorys.map((c, i) => (
-                        <option key={i} value={c}>
+                        <option key={i} value={c.name}>
                           {c.name}
                         </option>
                       ))}
@@ -442,7 +451,10 @@ const Header = () => {
                     id=""
                     placeholder="What do you need"
                   />
-                  <button className="bg-blue-700 right-0 absolute px-8 h-full font-semibold uppercase text-white">
+                  <button
+                    onClick={search}
+                    className="bg-blue-700 right-0 absolute px-8 h-full font-semibold uppercase text-white"
+                  >
                     Search
                   </button>
                 </div>

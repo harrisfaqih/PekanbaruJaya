@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 const Header = () => {
   const navigate = useNavigate();
   const { categorys } = useSelector((state) => state.home);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { card_product_count } = useSelector((state) => state.card);
   const { pathname } = useLocation;
   const [showShidebar, setShowShidebar] = useState(true);
   const user = false;
@@ -30,6 +32,13 @@ const Header = () => {
   const [categoryShow, setCategoryShow] = useState(true);
   const search = () => {
     navigate(`/products/search?category=${category}&&value=${searchValue}`);
+  };
+  const redirect_card_page = () => {
+    if (userInfo) {
+      navigate("/card");
+    } else {
+      navigate("/login");
+    }
   };
   return (
     <div className="w-full bg-white">
@@ -77,7 +86,7 @@ const Header = () => {
                     <li>English</li>
                   </ul>
                 </div>
-                {user ? (
+                {userInfo ? (
                   <Link
                     className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
                     to="/dashboard"
@@ -86,7 +95,7 @@ const Header = () => {
                       {" "}
                       <FaUser />{" "}
                     </span>
-                    <span> Harris AF </span>
+                    <span> {userInfo.name} </span>
                   </Link>
                 ) : (
                   <Link
@@ -203,13 +212,19 @@ const Header = () => {
                         {wishlist_count}
                       </div>
                     </div>
-                    <div className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]">
+                    <div
+                      onClick={redirect_card_page}
+                      className="relative flex justify-center items-center cursor-pointer w-[35px] h-[35px] rounded-full bg-[#e2e2e2]"
+                    >
                       <span className="text-xl text-blue-700">
                         <FaCartShopping />
                       </span>
-                      <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px] ">
-                        {wishlist_count}
-                      </div>
+
+                      {card_product_count !== 0 && (
+                        <div className="w-[20px] h-[20px] absolute bg-red-500 rounded-full text-white flex justify-center items-center -top-[3px] -right-[5px] ">
+                          {card_product_count}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -254,7 +269,7 @@ const Header = () => {
                     <li>English</li>
                   </ul>
                 </div>
-                {user ? (
+                {userInfo ? (
                   <Link
                     className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
                     to="/dashboard"
@@ -263,7 +278,7 @@ const Header = () => {
                       {" "}
                       <FaUser />{" "}
                     </span>
-                    <span> Harris AF </span>
+                    <span> {userInfo.name} </span>
                   </Link>
                 ) : (
                   <Link

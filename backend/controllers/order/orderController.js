@@ -1,7 +1,6 @@
 const moment = require("moment");
 const authOrderModel = require("../../models/authOrder");
 const customerOrder = require("../../models/customerOrder");
-
 const { responseReturn } = require("../../utiles/response");
 const cardModel = require("../../models/cardModel");
 
@@ -27,7 +26,6 @@ class orderController {
       console.log(error);
     }
   };
-
   // end method
 
   place_order = async (req, res) => {

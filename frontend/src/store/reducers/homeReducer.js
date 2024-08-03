@@ -65,6 +65,20 @@ export const query_products = createAsyncThunk(
 );
 // End Method
 
+export const product_details = createAsyncThunk(
+  "product/product_details",
+  async (slug, { fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/home/product-details/${slug}`);
+      //  console.log(data)
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.respone);
+    }
+  }
+);
+// End Method
+
 export const homeReducer = createSlice({
   name: "home",
   initialState: {
@@ -79,6 +93,9 @@ export const homeReducer = createSlice({
       low: 0,
       high: 100,
     },
+    product: {},
+    relatedProducts: [],
+    moreProducts: [],
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -99,6 +116,11 @@ export const homeReducer = createSlice({
       state.products = payload.products;
       state.totalProduct = payload.totalProduct;
       state.parPage = payload.parPage;
+    });
+    builder.addCase(product_details.fulfilled, (state, { payload }) => {
+      state.product = payload.product;
+      state.relatedProducts = payload.relatedProducts;
+      state.moreProducts = payload.moreProducts;
     });
   },
 });

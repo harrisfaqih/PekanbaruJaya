@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Rating from "./Rating";
 import RatingTemp from "./RatingTemp";
 import Pagination from "./Pagination";
@@ -6,14 +6,37 @@ import { Link } from "react-router-dom";
 import RatingReact from "react-rating";
 import { FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
+import { useDispatch, useSelector } from "react-redux";
+import { customer_review, messageClear } from "../store/reducers/homeReducer";
+import toast from "react-hot-toast";
 
-const Reviews = () => {
+const Reviews = ({ product }) => {
+  const dispatch = useDispatch();
   const [parPage, setParPage] = useState(1);
   const [pageNumber, setPageNumber] = useState(10);
-  const userInfo = {};
+  const { userInfo } = useSelector((state) => state.auth);
+  const { successMessage } = useSelector((state) => state.home);
 
   const [rat, setRat] = useState("");
   const [re, setRe] = useState("");
+  const review_submit = (e) => {
+    e.preventDefault();
+    const obj = {
+      name: userInfo.name,
+      review: re,
+      rating: rat,
+      productId: product._id,
+    };
+    dispatch(customer_review(obj));
+  };
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      setRat("");
+      setRe("");
+      dispatch(messageClear());
+    }
+  }, [successMessage]);
   return (
     <div className="mt-8">
       <div className="flex gap-10 md-lg:flex-col">
@@ -139,8 +162,10 @@ const Reviews = () => {
                 }
               />
             </div>
-            <form>
+            <form onSubmit={review_submit}>
               <textarea
+                value={re}
+                onChange={(e) => setRe(e.target.value)}
                 required
                 className="border outline-0 p-3 w-full"
                 name=""

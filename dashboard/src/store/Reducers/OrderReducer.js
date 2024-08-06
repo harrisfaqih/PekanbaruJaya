@@ -21,6 +21,38 @@ export const get_admin_orders = createAsyncThunk(
 
 // End Method
 
+export const get_admin_order = createAsyncThunk(
+  "orders/get_admin_order",
+  async (orderId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(`/admin/order/${orderId}`, {
+        withCredentials: true,
+      });
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
+export const admin_order_status_update = createAsyncThunk(
+  "orders/admin_order_status_update",
+  async ({ orderId, info }, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.put(
+        `/admin/order-status/update/${orderId}`,
+        info,
+        { withCredentials: true }
+      );
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// End Method
+
 export const OrderReducer = createSlice({
   name: "order",
   initialState: {
@@ -41,6 +73,21 @@ export const OrderReducer = createSlice({
       state.myOrders = payload.orders;
       state.totalOrder = payload.totalOrder;
     });
+    builder.addCase(get_admin_order.fulfilled, (state, { payload }) => {
+      state.order = payload.order;
+    });
+    builder.addCase(
+      admin_order_status_update.rejected,
+      (state, { payload }) => {
+        state.errorMessage = payload.message;
+      }
+    );
+    builder.addCase(
+      admin_order_status_update.fulfilled,
+      (state, { payload }) => {
+        state.successMessage = payload.message;
+      }
+    );
   },
 });
 export const { messageClear } = OrderReducer.actions;

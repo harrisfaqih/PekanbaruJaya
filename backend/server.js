@@ -25,6 +25,7 @@ app.use("/api", require("./routes/home/cardRoutes"));
 app.use("/api", require("./routes/dashboard/categoryRoutes"));
 app.use("/api", require("./routes/dashboard/productRoutes"));
 app.use("/api", require("./routes/home/customerAuthRoutes"));
+app.use("/api", require("./routes/dashboard/dashboardRoutes"));
 
 app.get("/", (req, res) => res.send("My Backend, Hii"));
 const port = process.env.PORT;

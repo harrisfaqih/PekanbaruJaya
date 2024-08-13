@@ -27,7 +27,7 @@ class productController {
         cloud_name: process.env.cloud_name,
         api_key: process.env.api_key,
         api_secret: process.env.api_secret,
-        secure: true,
+        secure: false,
       });
 
       try {
@@ -178,6 +178,11 @@ class productController {
             secure: true,
           });
 
+          // Menghapus gambar lama dari Cloudinary
+          const oldImagePublicId = oldImage.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(`products/${oldImagePublicId}`);
+
+          // Mengupload gambar baru ke Cloudinary
           const result = await cloudinary.uploader.upload(newImage.filepath, {
             folder: "products",
           });
@@ -200,6 +205,49 @@ class productController {
         }
       }
     });
+  };
+  // end methode
+
+  product_delete = async (req, res) => {
+    const { productId } = req.params;
+
+    try {
+      // Temukan produk berdasarkan ID
+      const product = await productModel.findById(productId);
+      if (!product) {
+        return responseReturn(res, 404, { error: "Product not found" });
+      }
+
+      cloudinary.config({
+        cloud_name: process.env.cloud_name,
+        api_key: process.env.api_key,
+        api_secret: process.env.api_secret,
+        secure: false,
+      });
+
+      // Hapus gambar dari Cloudinary jika ada
+      if (product.images && product.images.length > 0) {
+        const publicIds = product.images.map((image) => {
+          // Ambil public ID dari URL gambar
+          return image.split("/").pop().split(".")[0]; // Misalnya, "image_id" dari "https://res.cloudinary.com/demo/image/upload/v1234567890/image_id.jpg"
+        });
+        for (let i = 0; i < publicIds.length; i++) {
+          console.log(`Gambar ke-${i + 1} dengan public ID: ${publicIds[i]}`);
+        }
+        await Promise.all(
+          publicIds.map((publicId) =>
+            cloudinary.uploader.destroy(`products/${publicIds}`)
+          )
+        );
+      }
+
+      // Hapus produk dari database
+      await productModel.findByIdAndDelete(productId);
+      responseReturn(res, 200, { message: "Product deleted successfully" });
+    } catch (error) {
+      //console.log(error.response.data);
+      responseReturn(res, 500, { error: error.message });
+    }
   };
   // end methode
 }

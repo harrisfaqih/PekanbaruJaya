@@ -83,6 +83,25 @@ export const update_product = createAsyncThunk(
 
 //end methode
 
+export const delete_product = createAsyncThunk(
+  "product/delete_product",
+  async (productId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete(`/product-delete/${productId}`, {
+        withCredentials: true,
+      });
+
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+//end methode
+
 export const product_image_update = createAsyncThunk(
   "product/product_image_update",
   async (
@@ -98,7 +117,6 @@ export const product_image_update = createAsyncThunk(
       const { data } = await api.post("/product-image-update", formData, {
         withCredentials: true,
       });
-
       console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
@@ -107,6 +125,24 @@ export const product_image_update = createAsyncThunk(
     }
   }
 );
+
+//end methode
+
+// export const product_image_delete = createAsyncThunk(
+//   "product/product_image_delete",
+//   async (imageId, { rejectWithValue, fulfillWithValue }) => {
+//     try {
+//       const { data } = await api.delete(`/product-image-delete/${imageId}`, {
+//         withCredentials: true,
+//       });
+
+//       console.log(data);
+//       return fulfillWithValue(data); // Pastikan data berisi pesan sukses
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
 
 //end methode
 
@@ -159,6 +195,15 @@ export const productReducer = createSlice({
     builder.addCase(product_image_update.fulfilled, (state, { payload }) => {
       state.product = payload.product;
       state.successMessage = payload.message;
+    });
+    builder.addCase(delete_product.fulfilled, (state, { payload }) => {
+      state.loader = false;
+      state.product = payload.product;
+      state.successMessage = payload.message;
+    });
+    builder.addCase(delete_product.rejected, (state, { payload }) => {
+      state.loader = false;
+      state.errorMessage = payload.error;
     });
   },
 });

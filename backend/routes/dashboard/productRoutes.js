@@ -20,5 +20,9 @@ router.post(
   "/product-image-update",
   /*authMiddlewares,*/ productController.product_image_update
 );
+router.delete(
+  "/product-delete/:productId",
+  /*authMiddlewares,*/ productController.product_delete
+);
 
 module.exports = router;

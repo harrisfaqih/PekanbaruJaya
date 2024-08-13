@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { get_products } from "../../store/Reducers/productReducers";
+import {
+  get_products,
+  delete_product,
+} from "../../store/Reducers/productReducers";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -13,6 +16,12 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
+
+  const handleDelete = (id) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus produk ini?")) {
+      dispatch(delete_product(id)); // Menghapus produk berdasarkan id
+    }
+  };
 
   useEffect(() => {
     const obj = {
@@ -146,10 +155,13 @@ const Products = () => {
                         {" "}
                         <FaEye />{" "}
                       </Link>
-                      <Link className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
+                      <button
+                        onClick={() => handleDelete(d._id)}
+                        className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"
+                      >
                         {" "}
                         <FaTrash />{" "}
-                      </Link>
+                      </button>
                     </div>
                   </td>
                 </tr>

@@ -5,7 +5,7 @@ const formidable = require("formidable");
 
 class productController {
   add_product = async (req, res) => {
-    const { id } = req;
+    //const { id } = req;
     const form = formidable({ multiples: true });
 
     form.parse(req, async (err, field, files) => {
@@ -54,7 +54,7 @@ class productController {
         }
 
         await productModel.create({
-          sellerId: Id,
+          //sellerId: Id,
           name,
           slug,
           shopName,

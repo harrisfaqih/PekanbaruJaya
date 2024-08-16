@@ -92,6 +92,7 @@ const EditProduct = () => {
     price: "",
     brand: "",
     stock: "",
+    sizes: [], // Added state for sizes
   });
   const inputHandle = (e) => {
     setState({
@@ -139,6 +140,7 @@ const EditProduct = () => {
       price: product.price,
       brand: product.brand,
       stock: product.stock,
+      sizes: product.sizes, // Set sizes from product data
     });
     setCategory(product.category);
     setImageShow(product.images);
@@ -159,6 +161,7 @@ const EditProduct = () => {
       price: state.price,
       brand: state.brand,
       stock: state.stock,
+      sizes: JSON.stringify(state.sizes.split(",")), // Convert sizes to string
       productId: productId,
     };
     dispatch(update_product(obj));
@@ -305,6 +308,19 @@ const EditProduct = () => {
                 cols="10"
                 rows="4"
               ></textarea>
+            </div>
+
+            <div className="flex flex-col mb-3">
+              <label htmlFor="sizes">Sizes</label>
+              <input
+                className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
+                onChange={inputHandle}
+                value={state.sizes}
+                type="text"
+                name="sizes"
+                id="sizes"
+                placeholder="Enter sizes (comma separated)"
+              />
             </div>
 
             <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 gap-3 w-full text-[#d0d2d6] mb-4">

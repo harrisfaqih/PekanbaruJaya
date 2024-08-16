@@ -50,6 +50,7 @@ const productSchema = new Schema(
       type: Number,
       default: 0,
     },
+    sizes: { type: [String], required: true }, // Menambahkan field ukuran
   },
   { timestamps: true }
 );

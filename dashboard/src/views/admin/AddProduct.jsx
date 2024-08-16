@@ -77,8 +77,7 @@ const AddProduct = () => {
     }
   };
 
-  // console.log(images)
-  // console.log(imageShow)
+  const [sizes, setSizes] = useState([]); // Menambahkan state untuk ukuran
 
   useEffect(() => {
     if (successMessage) {
@@ -92,15 +91,6 @@ const AddProduct = () => {
         brand: "",
         stock: "",
       });
-      // if (images.length > 1 && imageShow.length > 1) {
-      //   setImages((images.length = 1));
-      //   setImageShow((imageShow.length = 1));
-      //   setImages([]);
-      //   setImageShow([]);
-      // } else if (images.length === 1 && imageShow.length === 1) {
-      //   setImages([]);
-      //   setImageShow([]);
-      // }
       setImages([]);
       setImageShow([]);
       setCategory("");
@@ -143,6 +133,7 @@ const AddProduct = () => {
     formData.append("brand", state.brand);
     formData.append("shopName", "PekanbaruJaya");
     formData.append("category", category);
+    formData.append("sizes", JSON.stringify(sizes)); // Menambahkan ukuran ke formData
 
     for (let i = 0; i < images.length; i++) {
       formData.append("images", images[i]);
@@ -284,6 +275,19 @@ const AddProduct = () => {
                   placeholder="discount by %"
                 />
               </div>
+            </div>
+
+            <div className="flex flex-col mb-3">
+              <label htmlFor="sizes">Sizes (comma separated)</label>
+              <input
+                className="px-4 py-2 focus:border-indigo-500 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
+                onChange={(e) => setSizes(e.target.value.split(","))} // Mengubah input menjadi array
+                value={sizes.join(",")}
+                type="text"
+                name="sizes"
+                id="sizes"
+                placeholder="20, 30, 40, 50 mm"
+              />
             </div>
 
             <div className="flex flex-col w-full gap-1 mb-5">

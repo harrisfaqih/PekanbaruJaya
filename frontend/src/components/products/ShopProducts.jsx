@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
 
 const ShopProducts = ({ styles, products }) => {
+  const [selectedSizes, setSelectedSizes] = useState(
+    products.map((p) => p.sizes[0]) // Inisialisasi dengan ukuran pertama untuk setiap produk
+  );
+
+  const handleSizeChange = (index, size) => {
+    const newSizes = [...selectedSizes];
+    newSizes[index] = size; // Update ukuran yang dipilih untuk produk tertentu
+    setSelectedSizes(newSizes);
+  };
+
   return (
     <div
       className={`w-full grid ${
@@ -54,6 +64,18 @@ const ShopProducts = ({ styles, products }) => {
                 <Rating ratings={p.rating} />
               </div>
             </div>
+            {/* Dropdown untuk memilih ukuran */}
+            <select
+              value={selectedSizes[i]} // Menggunakan ukuran yang dipilih untuk produk ini
+              onChange={(e) => handleSizeChange(i, e.target.value)} // Memperbarui ukuran yang dipilih
+              className="mt-2 p-1 border rounded"
+            >
+              {p.sizes.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       ))}

@@ -341,6 +341,13 @@ const SearchProducts = () => {
 
                 <div className="pb-8">
                   <ShopProducts products={products} styles={styles} />
+                  {products.map((product) => (
+                    <div key={product._id}>
+                      <h3>{product.name}</h3>
+                      <p>Sizes: {product.sizes.join(", ")}</p>
+                      {/* Logika untuk memilih ukuran */}
+                    </div>
+                  ))}
                 </div>
 
                 <div>

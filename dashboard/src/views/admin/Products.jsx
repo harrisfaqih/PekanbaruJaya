@@ -74,6 +74,9 @@ const Products = () => {
                   Stock
                 </th>
                 <th scope="col" className="py-3 px-4">
+                  Size
+                </th>
+                <th scope="col" className="py-3 px-4">
                   Action
                 </th>
               </tr>
@@ -137,6 +140,12 @@ const Products = () => {
                     className="py-1 px-4 font-medium whitespace-nowrap"
                   >
                     {d.stock}
+                  </td>
+                  <td
+                    scope="row"
+                    className="py-1 px-4 font-medium whitespace-nowrap"
+                  >
+                    {d.sizes.join(", ")} {/* Menampilkan ukuran produk */}
                   </td>
 
                   <td

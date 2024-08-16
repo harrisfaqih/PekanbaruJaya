@@ -43,6 +43,7 @@ class orderController {
       for (let j = 0; j < pro.length; j++) {
         const tempCusPro = pro[j].productInfo;
         tempCusPro.quantity = pro[j].quantity;
+        tempCusPro.size = pro[j].size; // Menyimpan ukuran produk
         customerOrderProduct.push(tempCusPro);
         if (pro[j]._id) {
           cardId.push(pro[j]._id);

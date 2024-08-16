@@ -8,7 +8,7 @@ const {
 
 class cardController {
   add_to_card = async (req, res) => {
-    const { userId, productId, quantity } = req.body;
+    const { userId, productId, quantity, size } = req.body; // Menambahkan ukuran
     try {
       const product = await cardModel.findOne({
         $and: [
@@ -32,6 +32,7 @@ class cardController {
           userId,
           productId,
           quantity,
+          size, // Menyimpan ukuran
         });
         responseReturn(res, 201, {
           message: "Added To Card Successfully",

@@ -14,6 +14,10 @@ const cardSchema = new Schema(
       type: Number,
       required: true,
     },
+    size: {
+      type: String, // Menambahkan field untuk ukuran
+      required: true,
+    },
   },
   { timestamps: true }
 );

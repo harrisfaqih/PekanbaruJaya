@@ -61,6 +61,9 @@ const Orders = () => {
                   Order Status
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Size
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Action
                 </th>
               </tr>
@@ -91,6 +94,12 @@ const Orders = () => {
                     className="px-6 py-4 font-medium whitespace-nowrap"
                   >
                     {o.delivery_status}
+                  </td>
+                  <td
+                    scope="row"
+                    className="px-6 py-4 font-medium whitespace-nowrap"
+                  >
+                    {o.size}
                   </td>
                   <td
                     scope="row"

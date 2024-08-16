@@ -18,6 +18,7 @@ class productController {
         discount,
         shopName,
         brand,
+        sizes, // Menambahkan ukuran ke field
       } = field;
       const { images } = files;
       name = name.trim();
@@ -65,6 +66,7 @@ class productController {
           discount: parseInt(discount),
           images: allImageUrl,
           brand: brand.trim(),
+          sizes: JSON.parse(sizes), // Menyimpan ukuran produk
         });
         responseReturn(res, 201, { message: "Product Added Successfully" });
       } catch (error) {
@@ -133,12 +135,21 @@ class productController {
   // end methode
 
   product_update = async (req, res) => {
-    let { name, description, stock, price, discount, brand, productId } =
-      req.body;
+    let { name, description, stock, price, discount, brand, sizes, productId } =
+      req.body; // Menambahkan sizes
     name = name.trim();
     const slug = name.split(" ").join("-");
 
     try {
+      // Validasi dan konversi ukuran
+      let parsedSizes;
+      if (sizes) {
+        // Jika sizes ada, pisahkan berdasarkan koma dan trim setiap elemen
+        parsedSizes = sizes.split(",").map((size) => size.trim());
+      } else {
+        parsedSizes = []; // Atau bisa juga null, tergantung kebutuhan
+      }
+
       await productModel.findByIdAndUpdate(productId, {
         name,
         description,
@@ -146,7 +157,7 @@ class productController {
         price,
         discount,
         brand,
-        productId,
+        sizes: parsedSizes, // Menyimpan ukuran produk
         slug,
       });
       const product = await productModel.findById(productId);
@@ -155,6 +166,7 @@ class productController {
         message: "Product Updated Successfully",
       });
     } catch (error) {
+      console.error("Error updating product:", error); // Menambahkan log untuk error
       responseReturn(res, 500, { error: error.message });
     }
   };

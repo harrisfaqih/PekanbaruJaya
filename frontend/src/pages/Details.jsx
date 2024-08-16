@@ -88,6 +88,7 @@ const Details = () => {
   };
 
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0]); // Menyimpan ukuran yang dipilih
 
   const inc = () => {
     if (quantity >= product.stock) {
@@ -110,6 +111,7 @@ const Details = () => {
           userId: userInfo.id,
           quantity,
           productId: product._id,
+          size: selectedSize, // Menambahkan ukuran yang dipilih
         })
       );
     } else {
@@ -154,6 +156,7 @@ const Details = () => {
           {
             quantity,
             productInfo: product,
+            size: selectedSize, // Menambahkan ukuran yang dipilih
           },
         ],
       },
@@ -283,6 +286,19 @@ const Details = () => {
                       <div onClick={inc} className="px-6 cursor-pointer">
                         +
                       </div>
+                    </div>
+                    <div>
+                      <select
+                        value={selectedSize} // Menggunakan ukuran yang dipilih
+                        onChange={(e) => setSelectedSize(e.target.value)} // Memperbarui ukuran yang dipilih
+                        className="mt-2 p-1 border rounded"
+                      >
+                        {product.sizes.map((size) => (
+                          <option key={size} value={size}>
+                            {size}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <button

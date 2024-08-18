@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
@@ -16,14 +16,27 @@ const FeatureProducts = ({ products }) => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
   const { errorMessage, successMessage } = useSelector((state) => state.card);
+  // State untuk menyimpan ukuran yang dipilih untuk setiap produk
+  const [selectedSizes, setSelectedSizes] = useState(
+    products.reduce((acc, product) => {
+      acc[product._id] = product.sizes[0]; // Inisialisasi dengan ukuran pertama
+      return acc;
+    }, {})
+  );
 
   const add_card = (id) => {
+    const selectedSize = selectedSizes[id];
+    if (!selectedSize) {
+      toast.error("Please select a size."); // Tambahkan notifikasi jika ukuran tidak dipilih
+      return;
+    }
     if (userInfo) {
       dispatch(
         add_to_card({
           userId: userInfo.id,
           quantity: 1,
           productId: id,
+          size: selectedSize,
         })
       );
     } else {
@@ -54,8 +67,16 @@ const FeatureProducts = ({ products }) => {
         discount: pro.discount,
         rating: pro.rating,
         slug: pro.slug,
+        size: selectedSizes[pro.size],
       })
     );
+  };
+
+  const handleSizeChange = (id, size) => {
+    setSelectedSizes((prev) => ({
+      ...prev,
+      [id]: size, // Memperbarui ukuran yang dipilih untuk produk tertentu
+    }));
   };
 
   return (
@@ -114,6 +135,17 @@ const FeatureProducts = ({ products }) => {
                   <Rating ratings={p.rating} />
                 </div>
               </div>
+              <select
+                value={selectedSizes[p._id]} // Menggunakan ukuran yang dipilih
+                onChange={(e) => handleSizeChange(p._id, e.target.value)} // Memperbarui ukuran yang dipilih
+                className="mt-2 p-1 border rounded"
+              >
+                {p.sizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         ))}

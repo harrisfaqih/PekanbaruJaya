@@ -133,6 +133,7 @@ const Details = () => {
           discount: product.discount,
           rating: product.rating,
           slug: product.slug,
+          size: selectedSize, // Menambahkan ukuran yang dipilih
         })
       );
     } else {

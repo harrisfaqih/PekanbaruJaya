@@ -88,7 +88,9 @@ const Details = () => {
   };
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]); // Menyimpan ukuran yang dipilih
+  const [selectedSize, setSelectedSize] = useState(
+    product.sizes ? product.sizes[0] : ""
+  ); // Menyimpan ukuran yang dipilih
 
   const inc = () => {
     if (quantity >= product.stock) {
@@ -213,11 +215,15 @@ const Details = () => {
           <div className="grid grid-cols-2 md-lg:grid-cols-1 gap-8">
             <div>
               <div className="p-5 border">
-                <img
-                  className="h-[400px] w-full"
-                  src={image ? image : product.images?.[0]}
-                  alt=""
-                />
+                {product.images && product.images.length > 0 ? ( // Pastikan images ada dan memiliki elemen
+                  <img
+                    className="h-[400px] w-full"
+                    src={image ? image : product.images[0]} // Akses elemen pertama setelah pengecekan
+                    alt=""
+                  />
+                ) : (
+                  <div>No images available</div> // Pesan jika tidak ada gambar
+                )}
               </div>
               <div className="py-3">
                 {product.images && (

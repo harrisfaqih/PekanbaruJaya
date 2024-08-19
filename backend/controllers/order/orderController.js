@@ -69,6 +69,7 @@ class orderController {
         for (let j = 0; j < pro.length; j++) {
           const tempPro = pro[j].productInfo;
           tempPro.quantity = pro[j].quantity;
+          tempPro.size = pro[j].size; // Menyimpan ukuran produk di authorOrderData
           storePor.push(tempPro);
         }
 

@@ -144,6 +144,23 @@ export const cardReducer = createSlice({
       state.card_product_count = 0;
       state.wishlist_count = 0;
     },
+    /////
+    add_to_card: (state, action) => {
+      const { productId, size } = action.payload; // Pastikan ukuran diambil
+      const existingProduct = state.card_products.find(
+        (product) => product.productId === productId && product.size === size // Cek berdasarkan ukuran
+      );
+
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        state.card_products.push({
+          ...action.payload,
+          quantity: 1,
+        });
+      }
+    },
+    ////////
   },
   extraReducers: (builder) => {
     builder.addCase(add_to_card.rejected, (state, { payload }) => {

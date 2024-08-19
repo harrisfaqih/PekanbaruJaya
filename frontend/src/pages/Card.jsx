@@ -25,13 +25,28 @@ const Card = () => {
     outofstock_products,
   } = useSelector((state) => state.card);
   const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(get_card_products(userInfo.id));
   }, []);
+
+  // Tambahkan console.log di sini untuk memeriksa struktur data
+  useEffect(() => {
+    console.log(card_products); // Memeriksa data yang diterima
+  }, [card_products]);
+
   const redirect = () => {
+    const productsWithSize = card_products.map((product) => ({
+      ...product,
+      products: product.products.map((pt) => ({
+        ...pt,
+        size: pt.size, // Pastikan ukuran disertakan
+      })),
+    }));
+
     navigate("/shipping", {
       state: {
-        products: card_products,
+        products: productsWithSize, // Menggunakan produk dengan ukuran
         price: price,
         shipping_fee: shipping_fee,
         items: buy_product_item,
@@ -91,15 +106,15 @@ const Card = () => {
                     </div>
 
                     {card_products.map((p, i) => (
-                      <div className="flex bg-white p-4 flex-col gap-2">
+                      <div className="flex bg-white p-4 flex-col gap-2" key={i}>
                         <div className="flex justify-start items-center">
                           <h2 className="text-md text-slate-600 font-bold">
-                            PekanbaruJayaUser
+                            {p.shopName} {/* Menampilkan nama toko */}
                           </h2>
                         </div>
 
-                        {p.products.map((pt, i) => (
-                          <div className="w-full flex flex-wrap">
+                        {p.products.map((pt, j) => (
+                          <div className="w-full flex flex-wrap" key={j}>
                             <div className="flex sm:w-full gap-2 w-7/12">
                               <div className="flex gap-2 justify-start items-center">
                                 <img
@@ -109,11 +124,15 @@ const Card = () => {
                                 />
                                 <div className="pr-4 text-slate-600">
                                   <h2 className="text-md font-semibold">
-                                    {pt.productInfo.name}
+                                    {pt.productInfo.name}L
                                   </h2>
                                   <span className="text-sm">
                                     Brand: {pt.productInfo.brand}
                                   </span>
+                                  <div>
+                                    <span>Size: {pt.size || "N/A"}</span>{" "}
+                                    {/* Mengakses ukuran dari objek produk */}
+                                  </div>
                                 </div>
                               </div>
                             </div>

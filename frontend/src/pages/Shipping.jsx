@@ -41,10 +41,19 @@ const Shipping = () => {
   };
 
   const placeOrder = () => {
+    // Menambahkan ukuran ke dalam produk
+    const productsWithSize = products.map((product) => ({
+      ...product,
+      products: product.products.map((pt) => ({
+        ...pt,
+        size: pt.size, // Pastikan ukuran disertakan
+      })),
+    }));
+
     dispatch(
       place_order({
         price,
-        products,
+        products: productsWithSize, // Menggunakan produk dengan ukuran
         shipping_fee,
         items,
         shippingInfo: state,

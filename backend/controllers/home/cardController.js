@@ -46,7 +46,6 @@ class cardController {
   // End Method
 
   get_card_products = async (req, res) => {
-    // console.log("broo");
     const co = 0;
     const { userId } = req.params;
     try {
@@ -81,7 +80,7 @@ class cardController {
         (p) => p.products[0].stock >= p.quantity
       );
       for (let i = 0; i < stockProduct.length; i++) {
-        const { quantity } = stockProduct[i];
+        const { quantity, size } = stockProduct[i]; // Ambil ukuran
         card_product_count = buy_product_item + quantity;
 
         buy_product_item = buy_product_item + quantity;
@@ -118,12 +117,14 @@ class cardController {
               name: unique[i],
               shopName: tempProduct.shopName,
               price,
+              size: stockProduct[j].size, // Tambahkan ukuran ke respons
               products: p[i]
                 ? [
                     ...p[i].products,
                     {
                       _id: stockProduct[j]._id,
                       quantity: stockProduct[j].quantity,
+                      size: stockProduct[j].size, // Sertakan ukuran
                       productInfo: tempProduct,
                     },
                   ]
@@ -131,6 +132,7 @@ class cardController {
                     {
                       _id: stockProduct[j]._id,
                       quantity: stockProduct[j].quantity,
+                      size: stockProduct[j].size, // Sertakan ukuran
                       productInfo: tempProduct,
                     },
                   ],

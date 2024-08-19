@@ -255,6 +255,7 @@ const Shipping = () => {
                               <span className="text-sm">
                                 Brand: {pt.productInfo.brand}
                               </span>
+                              <p className="text-sm">Size: {pt.size}</p>
                             </div>
                           </div>
                         </div>

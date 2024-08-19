@@ -85,11 +85,13 @@ const OrderDetails = () => {
                   <div className="flex text-sm flex-col justify-start items-start">
                     <Link> {p.name} </Link>
                     <p>
-                      {" "}
                       <span>Brand : {p.brand}</span>{" "}
                     </p>
                     <p>
                       <span>Quantity : {p.quantity}</span>
+                    </p>
+                    <p>
+                      <span>Size : {p.size}</span>
                     </p>
                   </div>
                 </div>

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { add_to_card, add_to_wishlist } from "../../store/reducers/cardReducer";
+import {
+  add_to_card,
+  add_to_wishlist,
+  messageClear,
+} from "../../store/reducers/cardReducer";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,10 +15,22 @@ const ShopProducts = ({ styles, products }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
+  const { errorMessage, successMessage } = useSelector((state) => state.card);
 
   const [selectedSizes, setSelectedSizes] = useState(
     products.map((p) => p.sizes[0])
   );
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+  }, [successMessage, errorMessage, dispatch]);
 
   const handleSizeChange = (index, size) => {
     const newSizes = [...selectedSizes];
@@ -34,7 +50,7 @@ const ShopProducts = ({ styles, products }) => {
           discount: product.discount,
           rating: product.rating,
           slug: product.slug,
-          size: selectedSizes[products.size],
+          size: selectedSizes[products.indexOf(product)],
         })
       );
     } else {

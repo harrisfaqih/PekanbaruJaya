@@ -66,7 +66,7 @@ class productController {
           discount: parseInt(discount),
           images: allImageUrl,
           brand: brand.trim(),
-          sizes: JSON.parse(sizes), // Menyimpan ukuran produk
+          sizes: Array.isArray(sizes) ? sizes : JSON.parse(sizes), // Pastikan sizes adalah array
         });
         responseReturn(res, 201, { message: "Product Added Successfully" });
       } catch (error) {
@@ -144,8 +144,14 @@ class productController {
       // Validasi dan konversi ukuran
       let parsedSizes;
       if (sizes) {
-        // Jika sizes ada, pisahkan berdasarkan koma dan trim setiap elemen
-        parsedSizes = sizes.split(",").map((size) => size.trim());
+        // Pastikan sizes adalah string sebelum memanggil split
+        if (typeof sizes === "string") {
+          parsedSizes = sizes.split(",").map((size) => size.trim());
+        } else if (Array.isArray(sizes)) {
+          parsedSizes = sizes; // Jika sudah array, gunakan langsung
+        } else {
+          parsedSizes = []; // Atau bisa juga null, tergantung kebutuhan
+        }
       } else {
         parsedSizes = []; // Atau bisa juga null, tergantung kebutuhan
       }

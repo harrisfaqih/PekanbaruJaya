@@ -92,7 +92,7 @@ const EditProduct = () => {
     price: "",
     brand: "",
     stock: "",
-    sizes: [], // Added state for sizes
+    sizes: "", // Changed from array to string
   });
   const inputHandle = (e) => {
     setState({
@@ -133,17 +133,20 @@ const EditProduct = () => {
   };
 
   useEffect(() => {
-    setState({
-      name: product.name,
-      description: product.description,
-      discount: product.discount,
-      price: product.price,
-      brand: product.brand,
-      stock: product.stock,
-      sizes: product.sizes, // Set sizes from product data
-    });
-    setCategory(product.category);
-    setImageShow(product.images);
+    if (product) {
+      // Pastikan product tidak undefined
+      setState({
+        name: product.name,
+        description: product.description,
+        discount: product.discount,
+        price: product.price,
+        brand: product.brand,
+        stock: product.stock,
+        sizes: product.sizes ? product.sizes.join(", ") : "", // Cek apakah sizes ada
+      });
+      setCategory(product.category);
+      setImageShow(product.images);
+    }
   }, [product]);
 
   useEffect(() => {
@@ -161,7 +164,7 @@ const EditProduct = () => {
       price: state.price,
       brand: state.brand,
       stock: state.stock,
-      sizes: JSON.stringify(state.sizes.split(",")), // Convert sizes to string
+      sizes: state.sizes.split(",").map((size) => size.trim()), // Convert sizes string to array
       productId: productId,
     };
     dispatch(update_product(obj));

@@ -68,6 +68,10 @@ export const update_product = createAsyncThunk(
   "product/update_product",
   async (product, { rejectWithValue, fulfillWithValue }) => {
     try {
+      // Pastikan sizes adalah array sebelum mengirim
+      if (typeof product.sizes === "string") {
+        product.sizes = product.sizes.split(",").map((size) => size.trim());
+      }
       const { data } = await api.post("/product-update", product, {
         withCredentials: true,
       });

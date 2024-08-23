@@ -160,10 +160,7 @@ const Products = () => {
                         {" "}
                         <FaEdit />{" "}
                       </Link>
-                      <Link className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
-                        {" "}
-                        <FaEye />{" "}
-                      </Link>
+
                       <button
                         onClick={() => handleDelete(d._id)}
                         className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"
@@ -185,9 +182,9 @@ const Products = () => {
             <Pagination
               pageNumber={currentPage}
               setPageNumber={setCurrentPage}
-              totalItem={50}
+              totalItem={200}
               parPage={parPage}
-              showItem={3}
+              showItem={5}
             />
           </div>
         )}

@@ -22,6 +22,7 @@ import Orders from "./components/dashboard/Orders";
 import ChangePassword from "./components/dashboard/ChangePassword";
 import Wishlist from "./components/dashboard/Wishlist";
 import OrderDetails from "./components/dashboard/OrderDetails";
+import ConfirmOrder from "./pages/ConfrimOrder";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App() {
           </Route>
         </Route>
         <Route path="/product/details/:slug" element={<Details />} />
+        <Route path="/order/confirm?" element={<ConfirmOrder />} />
         <Route path="/products/search?" element={<SearchProducts />} />
         <Route path="/products?" element={<CategoryShop />} />
       </Routes>

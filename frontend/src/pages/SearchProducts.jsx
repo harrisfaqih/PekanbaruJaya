@@ -162,6 +162,7 @@ const SearchProducts = () => {
                 </div>
               </div>
 
+              {/* rating */}
               <div className="py-3 flex flex-col gap-4">
                 <h2 className="text-3xl font-bold mb-3 text-slate-600">
                   Rating{" "}
@@ -342,9 +343,9 @@ const SearchProducts = () => {
                 <div className="pb-8">
                   <ShopProducts products={products} styles={styles} />
                   {products.map((product) => (
-                    <div key={product._id}>
-                      <h3>{product.name}</h3>
-                      <p>Sizes: {product.sizes.join(", ")}</p>
+                    <div>
+                      <h3></h3>
+                      <p></p>
                       {/* Logika untuk memilih ukuran */}
                     </div>
                   ))}

@@ -2,13 +2,36 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
-import Stripe from "../components/Stripe";
+import axios from "axios";
 
 const Payment = () => {
   const {
     state: { price, items, orderId },
   } = useLocation();
-  const [paymentMethod, setPaymentMethod] = useState("stripe");
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+
+  const handlePayNow = async () => {
+    console.log("Tombol Pay Now diklik"); // Log untuk memastikan fungsi dipanggil
+    console.log("Order ID:", orderId); // Log untuk memeriksa orderId
+    if (!orderId) {
+      console.error("Order ID tidak ditemukan!");
+      return; // Hentikan eksekusi jika orderId tidak ada
+    }
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/order/confirm/${orderId}`
+      );
+      console.log("Response dari API:", response.data); // Log respons dari API
+      if (response.status === 200) {
+        // Tambahkan logika untuk menampilkan notifikasi sukses jika perlu
+        alert("Pembayaran berhasil diproses!"); // Contoh notifikasi
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan saat memproses pembayaran:", error); // Log error
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -18,20 +41,6 @@ const Payment = () => {
             <div className="w-7/12 md:w-full">
               <div className="pr-2 md:pr-0">
                 <div className="flex flex-wrap">
-                  <div
-                    onClick={() => setPaymentMethod("stripe")}
-                    className={`w-[20%] border-r cursor-pointer py-8 px-12 ${
-                      paymentMethod === "stripe" ? "bg-white" : "bg-slate-100"
-                    } `}
-                  >
-                    <div className="flex flex-col gap-[3px] justify-center items-center">
-                      <img
-                        src="http://localhost:3000/images/payment/stripe.png"
-                        alt=""
-                      />
-                    </div>
-                    <span className="text-slate-600">Stripe</span>
-                  </div>
                   <div
                     onClick={() => setPaymentMethod("cod")}
                     className={`w-[20%] border-r cursor-pointer py-8 px-12 ${
@@ -48,14 +57,12 @@ const Payment = () => {
                   </div>
                 </div>
 
-                {paymentMethod === "stripe" && (
-                  <div>
-                    <Stripe />
-                  </div>
-                )}
                 {paymentMethod === "cod" && (
                   <div className="w-full px-4 py-8 bg-white shadow-sm">
-                    <button className="px-10 py-[6px] rounded-sm hover:shadow-green-500/20 hover:shadow-lg bg-blue-500 text-white">
+                    <button
+                      onClick={handlePayNow}
+                      className="px-10 py-[6px] rounded-sm hover:shadow-green-500/20 hover:shadow-lg bg-blue-500 text-white"
+                    >
                       Pay Now
                     </button>
                   </div>

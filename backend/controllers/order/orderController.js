@@ -53,7 +53,8 @@ class orderController {
     const { orderId } = req.params;
     try {
       await customerOrder.findByIdAndUpdate(orderId, {
-        payment_status: "paid",
+        payment_status: "paid", // Set status pembayaran ke "paid"
+        delivery_status: "pending", // Set status pengiriman ke "pending"
       });
       await authOrderModel.updateMany(
         { orderId: new ObjectId(orderId) },

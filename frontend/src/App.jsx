@@ -44,9 +44,11 @@ function App() {
             <Route path="" element={<Index />} />
             <Route path="my-orders" element={<Orders />} />
             <Route path="change-password" element={<ChangePassword />} />
+            lll
             <Route path="my-wishlist" element={<Wishlist />} />
             <Route path="order/details/:orderId" element={<OrderDetails />} />
           </Route>
+          l
         </Route>
         <Route path="/product/details/:slug" element={<Details />} />
         <Route path="/order/confirm?" element={<ConfirmOrder />} />

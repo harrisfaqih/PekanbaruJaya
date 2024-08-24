@@ -21,15 +21,24 @@ class dashboardController {
       const totalProduct = await productModel.find({}).countDocuments();
       const totalOrder = await customerOrder.find({}).countDocuments();
       const totalSeller = await sellerModel.find({}).countDocuments();
-      //const messages = await adminSellerMessage.find({}).limit(3);
+
+      const totalStock = await productModel.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalStock: { $sum: "$stock" },
+          },
+        },
+      ]);
+
       const recentOrders = await customerOrder.find({}).limit(5);
       responseReturn(res, 200, {
         totalProduct,
         totalOrder,
         totalSeller,
-        //  messages,
         recentOrders,
         totalSale: totalSale.length > 0 ? totalSale[0].totalAmount : 0,
+        totalStock: totalStock.length > 0 ? totalStock[0].totalStock : 0,
       });
     } catch (error) {
       console.log(error.message);

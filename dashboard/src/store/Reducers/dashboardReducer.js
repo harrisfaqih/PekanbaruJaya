@@ -23,6 +23,7 @@ export const dashboardReducer = createSlice({
     totalProduct: 0,
     totalPendingOrder: 0,
     totalSeller: 0,
+    totalStock: 0, // {{ edit_1 }} Menambahkan totalStock ke initialState
     recentOrder: [],
     recentMessage: [],
   },
@@ -39,6 +40,7 @@ export const dashboardReducer = createSlice({
         state.totalOrder = payload.totalOrder;
         state.totalProduct = payload.totalProduct;
         state.totalSeller = payload.totalSeller;
+        state.totalStock = payload.totalStock; // {{ edit_2 }} Menambahkan totalStock dari payload
         state.recentOrder = payload.recentOrders;
         state.recentMessage = payload.messages;
       }

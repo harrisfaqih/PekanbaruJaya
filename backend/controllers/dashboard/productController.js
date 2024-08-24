@@ -135,8 +135,17 @@ class productController {
   // end methode
 
   product_update = async (req, res) => {
-    let { name, description, stock, price, discount, brand, sizes, productId } =
-      req.body; // Menambahkan sizes
+    let {
+      name,
+      description,
+      stock,
+      price,
+      discount,
+      brand,
+      sizes,
+      productId,
+      category,
+    } = req.body; // Menambahkan kategori
     name = name.trim();
     const slug = name.split(" ").join("-");
 
@@ -165,6 +174,7 @@ class productController {
         brand,
         sizes: parsedSizes, // Menyimpan ukuran produk
         slug,
+        category: category.trim(), // Menyimpan kategori produk
       });
       const product = await productModel.findById(productId);
       responseReturn(res, 200, {

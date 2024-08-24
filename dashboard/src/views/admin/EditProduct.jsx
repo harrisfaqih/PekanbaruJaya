@@ -166,6 +166,7 @@ const EditProduct = () => {
       stock: state.stock,
       sizes: state.sizes.split(",").map((size) => size.trim()), // Convert sizes string to array
       productId: productId,
+      category: category, // Tambahkan kategori ke objek yang dikirim
     };
     dispatch(update_product(obj));
   };

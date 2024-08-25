@@ -10,6 +10,7 @@ const Search = ({ setParPage, setSearchValue, searchValue }) => {
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="20">20</option>
+        <option value="1000">all</option>
       </select>
       <input
         onChange={(e) => setSearchValue(e.target.value)}

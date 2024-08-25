@@ -14,13 +14,17 @@ const DiscountProducts = () => {
   const { products } = useSelector((state) => state.product);
 
   const [searchValue, setSearchValue] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [parPage, setParPage] = useState(5);
 
   useEffect(() => {
     const obj = {
+      parPage: parseInt(parPage),
+      page: parseInt(currentPage),
       searchValue,
     };
     dispatch(get_products(obj));
-  }, [searchValue]);
+  }, [searchValue, currentPage, parPage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -29,7 +33,11 @@ const DiscountProducts = () => {
       </h1>
 
       <div className="w-full p-4 bg-[#6a5fdf] rounded-md">
-        <Search setSearchValue={setSearchValue} searchValue={searchValue} />
+        <Search
+          setParPage={setParPage}
+          setSearchValue={setSearchValue}
+          searchValue={searchValue}
+        />
 
         <div className="relative overflow-x-auto mt-5">
           <table className="w-full text-sm text-left text-[#d0d2d6]">

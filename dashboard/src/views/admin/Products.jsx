@@ -105,7 +105,7 @@ const Products = () => {
                     scope="row"
                     className="py-1 px-4 font-medium whitespace-nowrap"
                   >
-                    {d?.name?.slice(0, 15)}...
+                    {d?.name?.slice(0, 60)}
                   </td>
                   <td
                     scope="row"
@@ -175,21 +175,9 @@ const Products = () => {
             </tbody>
           </table>
         </div>
-        {totalProduct <= parPage ? (
-          ""
-        ) : (
-          <div className="w-full flex justify-end mt-4 bottom-4 right-4">
-            <Pagination
-              pageNumber={currentPage}
-              setPageNumber={setCurrentPage}
-              totalItem={200}
-              parPage={parPage}
-              showItem={5}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
 };
+
 export default Products;

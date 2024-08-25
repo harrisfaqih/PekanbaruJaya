@@ -48,13 +48,13 @@ export const allNav = [
   //   role: "admin",
   //   path: "/admin/dashboard/Sellers",
   // },
-  {
-    id: 6,
-    title: "Payment Request",
-    icon: <MdPayment />,
-    role: "admin",
-    path: "/admin/dashboard/Payment-Request",
-  },
+  // {
+  //   id: 6,
+  //   title: "Payment Request",
+  //   icon: <MdPayment />,
+  //   role: "admin",
+  //   path: "/admin/dashboard/Payment-Request",
+  // },
   // {
   //   id: 7,
   //   title: "Deactive Sellers",
@@ -99,10 +99,10 @@ export const allNav = [
   },
   {
     id: 13,
-    title: "Discount Product",
+    title: "Stock Monitoring",
     icon: <TbBasketDiscount />,
     role: "admin",
-    path: "/admin/dashboard/discount-product",
+    path: "/admin/dashboard/stock-monitor",
   },
   {
     id: 14,
@@ -118,13 +118,13 @@ export const allNav = [
     role: "seller",
     path: "/seller/dashboard/payments",
   },
-  {
-    id: 16,
-    title: "Chat-Customer",
-    icon: <IoChatbubbles />,
-    role: "admin",
-    path: "/admin/dashboard/chat-customer",
-  },
+  // {
+  //   id: 16,
+  //   title: "Chat-Customer",
+  //   icon: <IoChatbubbles />,
+  //   role: "admin",
+  //   path: "/admin/dashboard/chat-customer",
+  // },
   {
     id: 17,
     title: "Chat-Support",

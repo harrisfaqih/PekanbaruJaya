@@ -99,7 +99,7 @@ export const adminRoutes = [
     ability: ["active", "deactive"],
   },
   {
-    path: "admin/dashboard/discount-product",
+    path: "admin/dashboard/stock-monitor",
     element: <DiscountProducts />,
     role: "admin",
   },

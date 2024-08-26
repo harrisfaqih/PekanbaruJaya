@@ -78,14 +78,14 @@ class orderController {
         year: splitTime[2],
       });
 
-      for (let i = 0; i < auOrder.length; i++) {
-        await sellerWallet.create({
-          sellerId: auOrder[i].sellerId.toString(),
-          amount: auOrder[i].price,
-          month: splitTime[0],
-          year: splitTime[2],
-        });
-      }
+      // for (let i = 0; i < auOrder.length; i++) {
+      //   await sellerWallet.create({
+      //     sellerId: auOrder[i].sellerId.toString(),
+      //     amount: auOrder[i].price,
+      //     month: splitTime[0],
+      //     year: splitTime[2],
+      //   });
+      // }
       responseReturn(res, 200, { message: "success" });
     } catch (error) {
       console.log(error.message);

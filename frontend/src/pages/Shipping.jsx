@@ -47,6 +47,7 @@ const Shipping = () => {
       products: product.products.map((pt) => ({
         ...pt,
         size: pt.size, // Pastikan ukuran disertakan
+        quantity: pt.quantity, // Menambahkan quantity ke dalam produk
       })),
     }));
 
@@ -256,6 +257,7 @@ const Shipping = () => {
                                 Brand: {pt.productInfo.brand}
                               </span>
                               <p className="text-sm">Size: {pt.size}</p>
+                              <p className="text-sm">Quantity: {pt.quantity}</p>
                             </div>
                           </div>
                         </div>

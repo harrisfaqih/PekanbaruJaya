@@ -6,12 +6,27 @@ const authSchema = new Schema(
       type: Schema.ObjectId,
       required: true,
     },
-    sellerId: {
-      type: Schema.ObjectId,
-      required: false,
-    },
+    // sellerId: {
+    //   type: Schema.ObjectId,
+    //   required: false,
+    // },
     products: {
-      type: Array,
+      type: [
+        {
+          productInfo: {
+            type: Array,
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+          size: {
+            type: String,
+            required: true, // Menyimpan ukuran produk
+          },
+        },
+      ],
       required: true,
     },
     price: {

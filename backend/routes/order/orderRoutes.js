@@ -3,6 +3,7 @@ const router = require("express").Router();
 
 // Customer
 router.post("/home/order/place-order", orderController.place_order);
+router.post("/home/order/update-stock", orderController.update_stock);
 router.get(
   "/home/customer/get-dashboard-data/:userId",
   orderController.get_customer_dashboard_data

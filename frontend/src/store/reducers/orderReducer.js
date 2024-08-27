@@ -22,6 +22,7 @@ export const place_order = createAsyncThunk(
         userId,
         navigate,
       });
+      await api.post("/home/order/update-stock", { products });
       navigate("/payment", {
         state: {
           price: price + shipping_fee,

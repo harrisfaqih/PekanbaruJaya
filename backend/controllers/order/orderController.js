@@ -2,6 +2,7 @@ const moment = require("moment");
 const authOrderModel = require("../../models/authOrder");
 const customerOrder = require("../../models/customerOrder");
 const myShopWallet = require("../../models/myShopWallet");
+const productModel = require("../../models/productModel");
 const { responseReturn } = require("../../utiles/response");
 const cardModel = require("../../models/cardModel");
 const {
@@ -318,6 +319,24 @@ class orderController {
     }
   };
   // End Method
+
+  update_stock = async (req, res) => {
+    const { products } = req.body;
+    try {
+      for (let i = 0; i < products.length; i++) {
+        const pro = products[i].products;
+        for (let j = 0; j < pro.length; j++) {
+          await productModel.findByIdAndUpdate(pro[j].productInfo._id, {
+            $inc: { stock: -pro[j].quantity },
+          });
+        }
+      }
+      responseReturn(res, 200, { message: "Stock updated successfully" });
+    } catch (error) {
+      console.log(error.message);
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
 }
 
 module.exports = new orderController();

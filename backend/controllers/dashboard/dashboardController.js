@@ -2,7 +2,7 @@ const { responseReturn } = require("../../utiles/response");
 const myShopWallet = require("../../models/myShopWallet");
 const productModel = require("../../models/productModel");
 const customerOrder = require("../../models/customerOrder");
-const sellerModel = require("../../models/sellerModel");
+
 //const adminSellerMessage = require("../../models/chat/adminSellerMessage");
 
 class dashboardController {

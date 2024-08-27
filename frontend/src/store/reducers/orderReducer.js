@@ -70,6 +70,18 @@ export const get_order_details = createAsyncThunk(
 );
 // End Method
 
+export const cancel_order = createAsyncThunk(
+  "order/cancel_order",
+  async (orderId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(`/home/order/cancel-order/${orderId}`);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const orderReducer = createSlice({
   name: "order",
   initialState: {
@@ -90,6 +102,12 @@ export const orderReducer = createSlice({
     });
     builder.addCase(get_order_details.fulfilled, (state, { payload }) => {
       state.myOrder = payload.order;
+    });
+    builder.addCase(cancel_order.fulfilled, (state, { payload }) => {
+      state.successMessage = payload.message;
+      state.myOrders = state.myOrders.filter(
+        (order) => order._id !== payload.orderId
+      ); // Hapus order dari state
     });
   },
 });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { get_orders } from "../../store/reducers/orderReducer";
+import { get_orders, cancel_order } from "../../store/reducers/orderReducer";
 
 const Orders = () => {
   const [state, setState] = useState("all");
@@ -12,6 +12,7 @@ const Orders = () => {
   useEffect(() => {
     dispatch(get_orders({ status: state, customerId: userInfo.id }));
   }, [state]);
+
   const redirect = (ord) => {
     let items = 0;
     for (let i = 0; i < ord.length; i++) {
@@ -24,6 +25,15 @@ const Orders = () => {
         orderId: ord._id,
       },
     });
+  };
+
+  const cancelOrder = async (orderId) => {
+    try {
+      await dispatch(cancel_order(orderId));
+      // Refresh halaman atau lakukan tindakan lain setelah pembatalan berhasil
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -116,6 +126,14 @@ const Orders = () => {
                         className="bg-blue-200 text-blue-800 text-md font-semibold mr-2 px-3 py-[2px] rounded"
                       >
                         Pay Now
+                      </span>
+                    )}
+                    {o.payment_status === "unpaid" && (
+                      <span
+                        onClick={() => cancelOrder(o._id)}
+                        className="bg-red-200 text-red-800 text-md font-semibold mr-2 px-3 py-[2px] rounded cursor-pointer"
+                      >
+                        Cancel
                       </span>
                     )}
                   </td>

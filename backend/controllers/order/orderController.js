@@ -337,6 +337,33 @@ class orderController {
       responseReturn(res, 500, { error: error.message });
     }
   };
+
+  cancel_order = async (req, res) => {
+    const { orderId } = req.params;
+    try {
+      const order = await customerOrder.findById(orderId);
+      if (!order) {
+        return responseReturn(res, 404, { error: "Order not found" });
+      }
+
+      // Kembalikan stok barang
+      for (let i = 0; i < order.products.length; i++) {
+        const product = order.products[i];
+        await productModel.findByIdAndUpdate(product._id, {
+          $inc: { stock: product.quantity },
+        });
+      }
+
+      // Hapus order dari database
+      await customerOrder.findByIdAndDelete(orderId);
+      await authOrderModel.deleteMany({ orderId: new ObjectId(orderId) });
+
+      responseReturn(res, 200, { message: "Order cancelled successfully" });
+    } catch (error) {
+      console.log(error.message);
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
 }
 
 module.exports = new orderController();

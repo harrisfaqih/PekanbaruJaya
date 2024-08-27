@@ -13,6 +13,7 @@ import api from "../api/api";
 import { useDispatch } from "react-redux";
 import { user_reset } from "../store/reducers/authReducer";
 import { reset_count } from "../store/reducers/cardReducer";
+import { cancel_order } from "../store/reducers/orderReducer";
 
 const Dashboard = () => {
   const [filterShow, setFilterShow] = useState(false);
@@ -31,6 +32,15 @@ const Dashboard = () => {
       console.log(error.response.data);
     }
   };
+  const cancelOrder = async (orderId) => {
+    try {
+      await dispatch(cancel_order(orderId));
+      // Refresh halaman atau lakukan tindakan lain setelah pembatalan berhasil
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Header />

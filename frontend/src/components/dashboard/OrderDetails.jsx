@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { get_order_details } from "../../store/reducers/orderReducer";
+import {
+  get_order_details,
+  cancel_order,
+} from "../../store/reducers/orderReducer";
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -12,6 +15,15 @@ const OrderDetails = () => {
   useEffect(() => {
     dispatch(get_order_details(orderId));
   }, [orderId]);
+
+  const cancelOrder = async () => {
+    try {
+      await dispatch(cancel_order(orderId));
+      // Refresh halaman atau lakukan tindakan lain setelah pembatalan berhasil
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bg-white p-5">

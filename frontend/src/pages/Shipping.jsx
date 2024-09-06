@@ -226,7 +226,7 @@ const Shipping = () => {
                       </p>
 
                       <p className="text-slate-600 text-sm">
-                        Email To mbape@gmail.com
+                        Email To qifahsirrah@gmail.com
                       </p>
                     </div>
                   )}

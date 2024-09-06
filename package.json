@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "algoliasearch": "^4.24.0",
+    "papaparse": "^5.4.1"
+  }
+}

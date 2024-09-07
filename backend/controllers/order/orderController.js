@@ -354,6 +354,15 @@ class orderController {
         });
       }
 
+      // Kembalikan harga pesanan
+      const time = moment(Date.now()).format("l");
+      const splitTime = time.split("/");
+      await myShopWallet.create({
+        amount: -order.price, // Mengurangi saldo dengan harga pesanan
+        month: splitTime[0],
+        year: splitTime[2],
+      });
+
       // Hapus order dari database
       await customerOrder.findByIdAndDelete(orderId);
       await authOrderModel.deleteMany({ orderId: new ObjectId(orderId) });

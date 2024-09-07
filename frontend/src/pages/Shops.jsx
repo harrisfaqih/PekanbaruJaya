@@ -16,6 +16,7 @@ import {
   price_range_product,
   query_products,
 } from "../store/reducers/homeReducer";
+import Papa from "papaparse";
 
 const Shops = () => {
   const dispatch = useDispatch(); // Tambahkan tanda kurung untuk memanggil fungsi
@@ -27,9 +28,77 @@ const Shops = () => {
     totalProduct,
     parPage,
   } = useSelector((state) => state.home);
+  const [recommendations, setRecommendations] = useState([]);
+  const [showRecommendations, setShowRecommendations] = useState(false);
+
+  // Fungsi untuk membaca CSV dan mengambil rekomendasi
+  const fetchRecommendations = (userId) => {
+    Papa.parse("/Resultpreds.csv", {
+      download: true,
+      header: true,
+      complete: (results) => {
+        const cfPredsData = results.data;
+        const cfRecommenderModel = new CFRecommender(cfPredsData);
+        const recommendations = cfRecommenderModel.recommendItems(
+          userId,
+          [],
+          20
+        );
+        console.log("Recommendations:", recommendations);
+        setRecommendations(recommendations);
+      },
+    });
+  };
+
+  class CFRecommender {
+    constructor(cfPredictionsData) {
+      this.cfPredictionsData = cfPredictionsData;
+    }
+
+    get_model_name() {
+      return "Collaborative Filtering";
+    }
+
+    recommendItems(userId, itemsToIgnore = [], topn = 10) {
+      const userPredictions = this.cfPredictionsData.filter(
+        (row) => row.userId === userId
+      );
+      const sortedUserPredictions = userPredictions.sort(
+        (a, b) => b.recStrength - a.recStrength
+      );
+      const recommendations = sortedUserPredictions
+        .filter((row) => !itemsToIgnore.includes(row.barangId))
+        .slice(0, topn);
+      return recommendations;
+    }
+  }
+
+  // Fungsi untuk mendapatkan userId yang sedang login
+  function getCurrentUserId() {
+    // Coba dapatkan userId dari local storage
+    let userId = localStorage.getItem("userId");
+
+    // Jika tidak ada di local storage, coba dapatkan dari session storage
+    if (!userId) {
+      userId = sessionStorage.getItem("userId");
+    }
+
+    // Jika tidak ada di local storage dan session storage, gunakan userId default
+    if (!userId) {
+      userId = "669f9be0a4983453ddb05d5e";
+    }
+
+    return userId;
+  }
 
   useEffect(() => {
-    dispatch(price_range_product());
+    const userId = getCurrentUserId();
+    if (userId) {
+      console.log("Current User ID:", userId); // Implementasikan fungsi ini untuk mendapatkan userId yang sedang login
+      fetchRecommendations(userId);
+    } else {
+      console.log("User ID tidak ditemukan");
+    }
   }, []);
   // Tambahkan 'dispatch' ke dalam array dependensi
 
@@ -377,6 +446,47 @@ const Shops = () => {
                     />
                   )}
                 </div>
+                {/* Tambahkan bagian ini untuk menampilkan rekomendasi */}
+                <div className="mt-10">
+                  <h2 className="text-2xl font-bold mb-4">
+                    Recommended Products
+                  </h2>
+                  <button
+                    onClick={() => setShowRecommendations(!showRecommendations)}
+                    className="py-2 px-4 bg-indigo-500 text-white rounded-md"
+                  >
+                    {showRecommendations
+                      ? "Hide Recommendations"
+                      : "Show Recommendations"}
+                  </button>
+                  {showRecommendations && (
+                    <div className="grid grid-cols-4 md-lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 mt-6">
+                      {recommendations.map((rec, i) => (
+                        <div
+                          key={i}
+                          className="border group transition-all duration-500 hover:shadow-md hover:-mt-3"
+                        >
+                          <div className="relative overflow-hidden">
+                            <img
+                              src={rec.image}
+                              alt={rec.name}
+                              className="w-full h-48 object-cover"
+                            />
+                          </div>
+                          <div className="py-3 text-slate-600 px-2">
+                            <h2 className="font-bold">{rec.name}</h2>
+                            <div className="flex justify-start items-center gap-3">
+                              <span className="text-md font-semibold">
+                                Rp{rec.price}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {/* Akhir bagian rekomendasi */}
               </div>
             </div>
           </div>

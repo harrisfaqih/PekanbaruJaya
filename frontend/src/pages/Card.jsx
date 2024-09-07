@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
@@ -12,6 +12,7 @@ import {
   quantity_dec,
 } from "../store/reducers/cardReducer";
 import toast from "react-hot-toast";
+import Papa from "papaparse";
 
 const Card = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const Card = () => {
     outofstock_products,
   } = useSelector((state) => state.card);
   const navigate = useNavigate();
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     dispatch(get_card_products(userInfo.id));
@@ -34,6 +36,112 @@ const Card = () => {
   useEffect(() => {
     console.log(card_products); // Memeriksa data yang diterima
   }, [card_products]);
+
+  // Membaca CSV dan mendapatkan rekomendasi
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      const user_id = userInfo.id;
+      const response = await fetch("/Resultpreds.csv");
+      const reader = response.body.getReader();
+      const result = await reader.read();
+      const decoder = new TextDecoder("utf-8");
+      const csv = decoder.decode(result.value);
+      const parsedData = Papa.parse(csv, { header: true });
+      const cf_preds_df = parsedData.data;
+
+      console.log(cf_preds_df);
+
+      // Implementasi CFRecommender
+      class CFRecommender {
+        constructor(cf_predictions_df) {
+          this.cf_predictions_df = cf_predictions_df;
+        }
+
+        recommend_items(user_id, items_to_ignore = [], topn = 10) {
+          const user_predictions = this.cf_predictions_df.filter(
+            (row) => row.userId === user_id
+          );
+          console.log("User Predictions:", user_predictions);
+
+          const sorted_user_predictions = user_predictions.sort(
+            (a, b) => b.recStrength - a.recStrength
+          );
+          console.log("Sorted Predictions:", sorted_user_predictions);
+          const recommendations_df = sorted_user_predictions
+            .filter((row) => !items_to_ignore.includes(row.barangId))
+            .slice(0, topn);
+          console.log("recommendations_df :", recommendations_df);
+          return recommendations_df;
+        }
+      }
+
+      const cf_recommender_model = new CFRecommender(cf_preds_df);
+
+      console.log(`User ID yang dipilih: ${user_id}`);
+
+      // Define user ID yang dicari
+      //const user_id = userInfo.id;
+
+      // Baca dan parse file CSV
+      // Path ke file CSV
+      const filePath = "/hasilexport.csv";
+      fetch(filePath)
+        .then((response) => response.text())
+        .then((csvData) => {
+          // Parse CSV dengan PapaParse
+          Papa.parse(csvData, {
+            header: true,
+            dynamicTyping: true,
+            complete: (results) => {
+              // Ambil data dari hasil parse
+              const data = results.data;
+              console.log("Data dari CSV:", data);
+
+              // Cari index user_id di dalam data
+              const userIndex = data.findIndex((row) => row.userId === user_id);
+              console.log("User ID yang dicari:", user_id);
+              console.log("Index User ID di data:", userIndex);
+
+              if (userIndex !== -1) {
+                console.log(
+                  `User ID '${user_id}' ditemukan di dataset. ditemukan pada index: ${userIndex}`
+                );
+                const recommendations = cf_recommender_model.recommend_items(
+                  user_id,
+                  [],
+                  20
+                );
+                console.log(
+                  `Rekomendasi untuk User: ${user_id}, adalah = `,
+                  recommendations
+                ); // Menampilkan rekomendasi
+                setRecommendations(recommendations);
+              } else {
+                console.log(`User ID '${user_id}' tidak ditemukan di dataset.`);
+              }
+            },
+            error: (parseError) => {
+              console.error("Gagal mem-parse CSV:", parseError);
+            },
+          });
+        })
+        .catch((err) => {
+          console.error("Gagal membaca file CSV:", err);
+        });
+
+      //Menampilkan hasil rekomendasi dalam bentuk tulisan
+      // console.log("Rekomendasi untuk User:", user_id);
+      // recommendations.forEach((rec, index) => {
+      //   console.log(
+      //     `Rekomendasi ${index + 1}: Barang ID - ${
+      //       rec.barangId
+      //     }, Skor Rekomendasi - ${rec.recStrength}`
+      //   );
+      // });
+    };
+
+    fetchRecommendations();
+  }, [userInfo.id]);
 
   const redirect = () => {
     const productsWithSize = card_products.map((product) => ({
@@ -60,6 +168,7 @@ const Card = () => {
       dispatch(get_card_products(userInfo.id));
     }
   }, [successMessage]);
+
   const inc = (quantity, stock, card_id) => {
     const temp = quantity + 1;
     if (temp <= stock) {
@@ -313,6 +422,19 @@ const Card = () => {
               </Link>
             </div>
           )}
+        </div>
+      </section>
+      <section className="bg-[#eeeeee]">
+        <div className="w-[85%] lg:w-[90%] md:w-[90%] sm:w-[90%] mx-auto py-16">
+          <h2 className="text-xl font-bold">Rekomendasi untuk Anda</h2>
+          <div className="flex flex-wrap">
+            {recommendations.map((rec, index) => (
+              <div key={index} className="bg-white p-4 m-2">
+                <h3 className="text-md font-semibold">{rec.barangId}</h3>
+                <p>Rekomendasi Skor: {rec.recStrength}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       <Footer />

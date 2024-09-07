@@ -55,22 +55,36 @@ const Card = () => {
       class CFRecommender {
         constructor(cf_predictions_df) {
           this.cf_predictions_df = cf_predictions_df;
+          console.log("CF Predictions DataFrame:", cf_predictions_df); // Tambahkan ini
         }
 
         recommend_items(user_id, items_to_ignore = [], topn = 10) {
-          const user_predictions = this.cf_predictions_df.filter(
-            (row) => row.userId === user_id
-          );
+          // Iterasi melalui cf_predictions_df untuk menemukan prediksi untuk user_id
+          const user_predictions = this.cf_predictions_df
+            .map((row) => {
+              if (row[user_id]) {
+                return {
+                  userId: user_id,
+                  barangId: row.barangId,
+                  recStrength: parseFloat(row[user_id]),
+                };
+              }
+              return null;
+            })
+            .filter((prediction) => prediction !== null);
+
           console.log("User Predictions:", user_predictions);
 
           const sorted_user_predictions = user_predictions.sort(
             (a, b) => b.recStrength - a.recStrength
           );
           console.log("Sorted Predictions:", sorted_user_predictions);
+
           const recommendations_df = sorted_user_predictions
             .filter((row) => !items_to_ignore.includes(row.barangId))
             .slice(0, topn);
           console.log("recommendations_df :", recommendations_df);
+
           return recommendations_df;
         }
       }
@@ -107,7 +121,7 @@ const Card = () => {
                   `User ID '${user_id}' ditemukan di dataset. ditemukan pada index: ${userIndex}`
                 );
                 const recommendations = cf_recommender_model.recommend_items(
-                  user_id,
+                  user_id, // Gunakan user_id di sini
                   [],
                   20
                 );

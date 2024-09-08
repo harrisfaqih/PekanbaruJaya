@@ -16,6 +16,7 @@ import {
   price_range_product,
   query_products,
 } from "../store/reducers/homeReducer";
+//import Papa from "papaparse";
 
 const Shops = () => {
   const dispatch = useDispatch(); // Tambahkan tanda kurung untuk memanggil fungsi
@@ -28,9 +29,8 @@ const Shops = () => {
     parPage,
   } = useSelector((state) => state.home);
 
-  useEffect(() => {
-    dispatch(price_range_product());
-  }, []);
+  // Fungsi untuk mendapatkan userId yang sedang login
+
   // Tambahkan 'dispatch' ke dalam array dependensi
 
   useEffect(() => {

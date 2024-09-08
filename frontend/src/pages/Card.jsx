@@ -41,7 +41,7 @@ const Card = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       const user_id = userInfo.id;
-      const response = await fetch("/Resultpreds.csv");
+      const response = await fetch("/Resultpreds2.csv");
       const reader = response.body.getReader();
       const result = await reader.read();
       const decoder = new TextDecoder("utf-8");
@@ -65,7 +65,7 @@ const Card = () => {
               if (row[user_id]) {
                 return {
                   userId: user_id,
-                  barangId: row.barangId,
+                  barangId: row.barangId, // Pastikan barangId diakses dengan benar
                   recStrength: parseFloat(row[user_id]),
                 };
               }
@@ -125,10 +125,8 @@ const Card = () => {
                   [],
                   20
                 );
-                console.log(
-                  `Rekomendasi untuk User: ${user_id}, adalah = `,
-                  recommendations
-                ); // Menampilkan rekomendasi
+                console.log(`Rekomendasi untuk User: ${user_id}, adalah = `);
+                console.table(recommendations); // Menampilkan rekomendasi dalam format tabel
                 setRecommendations(recommendations);
               } else {
                 console.log(`User ID '${user_id}' tidak ditemukan di dataset.`);

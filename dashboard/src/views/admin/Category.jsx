@@ -23,7 +23,7 @@ const Category = () => {
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
-  const [parPage, setParPage] = useState(5);
+  const [parPage, setParPage] = useState(10);
   const [show, setShow] = useState(false);
   const [imageShow, setImage] = useState("");
 
@@ -108,9 +108,9 @@ const Category = () => {
                     <th scope="col" className="py-3 px-4">
                       Name
                     </th>
-                    <th scope="col" className="py-3 px-4">
+                    {/* <th scope="col" className="py-3 px-4">
                       Action
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
 
@@ -140,7 +140,7 @@ const Category = () => {
                         {d.name}
                       </td>
 
-                      <td
+                      {/* <td
                         scope="row"
                         className="py-1 px-4 font-medium whitespace-nowrap"
                       >
@@ -154,14 +154,14 @@ const Category = () => {
                             <FaTrash />{" "}
                           </Link>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
 
-            <div className="w-full flex justify-end mt-4 bottom-4 right-4">
+            {/* <div className="w-full flex justify-end mt-4 bottom-4 right-4">
               <Pagination
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
@@ -169,7 +169,7 @@ const Category = () => {
                 parPage={parPage}
                 showItem={3}
               />
-            </div>
+            </div> */}
           </div>
         </div>
 

@@ -167,39 +167,6 @@ const Header = () => {
                       Shop
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      className={`p-2 block ${
-                        pathname === "/blog"
-                          ? "text-[#059473]"
-                          : "text-slate-600"
-                      } `}
-                    >
-                      Blog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`p-2 block ${
-                        pathname === "/about"
-                          ? "text-[#059473]"
-                          : "text-slate-600"
-                      } `}
-                    >
-                      About Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`p-2 block ${
-                        pathname === "/contact"
-                          ? "text-[#059473]"
-                          : "text-slate-600"
-                      } `}
-                    >
-                      Contact Us
-                    </Link>
-                  </li>
                 </ul>
 
                 <div className="flex md-lg:hidden justify-center items-center gap-5">

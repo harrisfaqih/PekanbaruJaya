@@ -41,7 +41,7 @@ const Card = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       const user_id = userInfo.id;
-      const response = await fetch("/Resultpreds2.csv");
+      const response = await fetch("/cf_preds_df.csv");
       const reader = response.body.getReader();
       const result = await reader.read();
       const decoder = new TextDecoder("utf-8");
@@ -98,7 +98,7 @@ const Card = () => {
 
       // Baca dan parse file CSV
       // Path ke file CSV
-      const filePath = "/hasilexport.csv";
+      const filePath = "/interactions_train_indexed_df4.csv";
       fetch(filePath)
         .then((response) => response.text())
         .then((csvData) => {

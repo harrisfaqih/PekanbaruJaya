@@ -123,7 +123,7 @@ const Card = () => {
                 const recommendations = cf_recommender_model.recommend_items(
                   user_id, // Gunakan user_id di sini
                   [],
-                  20
+                  8
                 );
                 console.log(`Rekomendasi untuk User: ${user_id}, adalah = `);
                 console.table(recommendations); // Menampilkan rekomendasi dalam format tabel
@@ -443,7 +443,7 @@ const Card = () => {
             {recommendations.map((rec, index) => (
               <div key={index} className="bg-white p-4 m-2">
                 <h3 className="text-md font-semibold">{rec.barangId}</h3>
-                <p>Rekomendasi Skor: {rec.recStrength}</p>
+                {/* <p>Rekomendasi Skor: {rec.recStrength}</p> */}
               </div>
             ))}
           </div>

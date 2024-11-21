@@ -76,7 +76,7 @@ const Header = () => {
                     <FaGithub />{" "}
                   </a>
                 </div>
-                <div className="flex group cursor-pointer text-slate-800 text-sm justify-center items-center gap-1 relative after:h-[18px] after:w-[1px] after:bg-[#afafaf] after:-right-[16px] after:absolute before:absolute before:h-[18px] before:bg-[#afafaf] before:w-[1px] before:-left-[20px]">
+                {/* <div className="flex group cursor-pointer text-slate-800 text-sm justify-center items-center gap-1 relative after:h-[18px] after:w-[1px] after:bg-[#afafaf] after:-right-[16px] after:absolute before:absolute before:h-[18px] before:bg-[#afafaf] before:w-[1px] before:-left-[20px]">
                   <img src="http://localhost:3000/images/eng.png" alt="" />
                   <span>
                     <IoMdArrowDropdown />
@@ -85,7 +85,7 @@ const Header = () => {
                     <li>Indonesia</li>
                     <li>English</li>
                   </ul>
-                </div>
+                </div> */}
                 {userInfo ? (
                   <Link
                     className="flex cursor-pointer justify-center items-center gap-2 text-sm text-black"
@@ -106,7 +106,7 @@ const Header = () => {
                       {" "}
                       <FaLock />{" "}
                     </span>
-                    <span>Login </span>
+                    <span>Log in / Sign up </span>
                   </Link>
                 )}
               </div>

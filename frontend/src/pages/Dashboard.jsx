@@ -27,7 +27,8 @@ const Dashboard = () => {
       localStorage.removeItem("customerToken");
       dispatch(user_reset());
       dispatch(reset_count());
-      navigate("/login");
+      navigate("/");
+      //<Link to="/"></Link>;
     } catch (error) {
       console.log(error.response.data);
     }
@@ -103,7 +104,9 @@ const Dashboard = () => {
                   <span className="text-xl">
                     <IoMdLogOut />
                   </span>
-                  <div className="block">Logout </div>
+                  <Link to="/">
+                    <div className="block">Logout </div>
+                  </Link>
                 </li>
               </ul>
             </div>

@@ -140,16 +140,6 @@ const Card = () => {
         .catch((err) => {
           console.error("Gagal membaca file CSV:", err);
         });
-
-      //Menampilkan hasil rekomendasi dalam bentuk tulisan
-      // console.log("Rekomendasi untuk User:", user_id);
-      // recommendations.forEach((rec, index) => {
-      //   console.log(
-      //     `Rekomendasi ${index + 1}: Barang ID - ${
-      //       rec.barangId
-      //     }, Skor Rekomendasi - ${rec.recStrength}`
-      //   );
-      // });
     };
 
     fetchRecommendations();

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { get_admin_dashboard_data } from "../../store/Reducers/dashboardReducer";
 import moment from "moment";
+import api from "../../api/api";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -21,101 +22,38 @@ const AdminDashboard = () => {
     totalStock, // Assuming this state exists
   } = useSelector((state) => state.dashboard);
   const { userInfo } = useSelector((state) => state.auth);
+  const [lowStockProducts, setLowStockProducts] = React.useState([]);
 
   useEffect(() => {
     dispatch(get_admin_dashboard_data());
+    fetchLowStockProducts();
   }, []);
 
-  // const state = {
-  //   series: [
-  //     {
-  //       name: "Orders",
-  //       data: [23, 34, 45, 56, 76, 34, 23, 76, 87, 78, 34, 45],
-  //     },
-  //     {
-  //       name: "Revenue",
-  //       data: [67, 39, 45, 56, 90, 56, 23, 56, 87, 78, 67, 78],
-  //     },
-  //     {
-  //       name: "Sellers",
-  //       data: [34, 39, 56, 56, 80, 67, 23, 56, 98, 78, 45, 56],
-  //     },
-  //   ],
-  //   options: {
-  //     color: ["#181ee8", "#181ee8"],
-  //     plotOptions: {
-  //       radius: 30,
-  //     },
-  //     chart: {
-  //       background: "transparent",
-  //       foreColor: "#d0d2d6",
-  //     },
-  //     dataLabels: {
-  //       enabled: false,
-  //     },
-  //     strock: {
-  //       show: true,
-  //       curve: ["smooth", "straight", "stepline"],
-  //       lineCap: "butt",
-  //       colors: "#f0f0f0",
-  //       width: 0.5,
-  //       dashArray: 0,
-  //     },
-  //     xaxis: {
-  //       categories: [
-  //         "Jan",
-  //         "Feb",
-  //         "Mar",
-  //         "Apl",
-  //         "May",
-  //         "Jun",
-  //         "Jul",
-  //         "Aug",
-  //         "Sep",
-  //         "Oct",
-  //         "Nov",
-  //         "Dec",
-  //       ],
-  //     },
-  //     legend: {
-  //       position: "top",
-  //     },
-  //     responsive: [
-  //       {
-  //         breakpoint: 565,
-  //         yaxis: {
-  //           categories: [
-  //             "Jan",
-  //             "Feb",
-  //             "Mar",
-  //             "Apl",
-  //             "May",
-  //             "Jun",
-  //             "Jul",
-  //             "Aug",
-  //             "Sep",
-  //             "Oct",
-  //             "Nov",
-  //             "Dec",
-  //           ],
-  //         },
-  //         options: {
-  //           plotOptions: {
-  //             bar: {
-  //               horizontal: true,
-  //             },
-  //           },
-  //           chart: {
-  //             height: "550px",
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   },
-  // };
-
+  // Tambahkan fungsi untuk mengambil produk dengan stok rendah
+  const fetchLowStockProducts = async () => {
+    try {
+      const response = await api.get("/admin/get-products-with-low-stock");
+      setLowStockProducts(response.data.lowStockProducts);
+    } catch (error) {
+      console.error(
+        "Error fetching low stock products:",
+        error.response ? error.response.data : error.message
+      );
+      // ... existing error handling ...
+    }
+  };
   return (
     <div className="px-2 md:px-7 py-5">
+      {/* {lowStockProducts.length > 1 && (
+        <div className="alert alert-warning">
+          Ada produk dengan stok tinggal 1:
+          <ul>
+            {lowStockProducts.map((product) => (
+              <li key={product._id}>{product.name}</li>
+            ))}
+          </ul>
+        </div>
+      )} */}
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7">
         {/* sale*/}
         <div className="flex justify-between items-center p-5 bg-[#fae8e8] rounded-md gap-3">
@@ -171,6 +109,18 @@ const AdminDashboard = () => {
               type="bar"
               height={350}
             /> */}
+            <h1>
+              <b>Barang yang stoknya sisa 1</b>
+            </h1>
+            {lowStockProducts.length > 0 ? ( // Tampilkan nama barang jika ada
+              <ul>
+                {lowStockProducts.map((product) => (
+                  <li key={product._id}>{product.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Tidak ada barang dengan stok 1</p>
+            )}
           </div>
         </div>
 

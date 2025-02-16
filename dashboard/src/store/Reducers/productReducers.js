@@ -132,24 +132,6 @@ export const product_image_update = createAsyncThunk(
 
 //end methode
 
-// export const product_image_delete = createAsyncThunk(
-//   "product/product_image_delete",
-//   async (imageId, { rejectWithValue, fulfillWithValue }) => {
-//     try {
-//       const { data } = await api.delete(`/product-image-delete/${imageId}`, {
-//         withCredentials: true,
-//       });
-
-//       console.log(data);
-//       return fulfillWithValue(data); // Pastikan data berisi pesan sukses
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
-//end methode
-
 export const productReducer = createSlice({
   name: "product",
   initialState: {

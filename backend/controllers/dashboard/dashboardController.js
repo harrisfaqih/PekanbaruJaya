@@ -45,6 +45,16 @@ class dashboardController {
     }
   };
   //end Method
+  get_products_with_low_stock = async (req, res) => {
+    try {
+      const lowStockProducts = await productModel.find({ stock: 1 });
+      responseReturn(res, 200, { lowStockProducts });
+    } catch (error) {
+      console.log(error.message);
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
+  //end Method
 }
 
 module.exports = new dashboardController();

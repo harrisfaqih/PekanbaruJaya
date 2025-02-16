@@ -7,42 +7,7 @@ const {
 } = require("mongoose");
 
 class cardController {
-  /*add_to_card = async (req, res) => {
-    const { userId, productId, quantity, size } = req.body; // Menambahkan ukuran
-    try {
-      const product = await cardModel.findOne({
-        $and: [
-          {
-            productId: {
-              $eq: productId,
-            },
-          },
-          {
-            userId: {
-              $eq: userId,
-            },
-          },
-        ],
-      });
-
-      if (product) {
-        responseReturn(res, 404, { error: "Product Already Added To Card" });
-      } else {
-        const product = await cardModel.create({
-          userId,
-          productId,
-          quantity,
-          size, // Menyimpan ukuran
-        });
-        responseReturn(res, 201, {
-          message: "Added To Card Successfully",
-          product,
-        });
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };*/
+  
   // End Method
 
   add_to_card = async (req, res) => {

@@ -8,4 +8,10 @@ router.get(
   dashboardController.get_admin_dashboard_data
 );
 
+router.get(
+  "/admin/get-products-with-low-stock",
+  //authMiddlewares,
+  dashboardController.get_products_with_low_stock
+);
+
 module.exports = router;
